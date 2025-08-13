@@ -9,15 +9,13 @@ import { JwtStrategy } from './strategies/jwt.strategy';
   imports: [
     forwardRef(() => UsersModule),
     JwtModule.registerAsync({
-    imports: [ConfigModule],
-    useFactory: async (configService: ConfigService) => ({
-      secret: configService.get<string>('jwt.secret'),
-      signOptions: { 
-        expiresIn: configService.get<string>('jwt.expiresIn'),
-      },
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('jwt.secret'),
+        signOptions: { expiresIn: configService.get<string>('jwt.expiresIn') },
+      }),
+      inject: [ConfigService],
     }),
-    inject: [ConfigService],
-  }),
   ],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService, JwtModule],
