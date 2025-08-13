@@ -5,16 +5,16 @@ export interface JwtConfig {
   expiresIn: string;
 }
 
-interface MongoConfig {
+export interface MongoConfig {
   uri: string;
 }
 
-interface MyFatoorahConfig {
+export interface MyFatoorahConfig {
   apiKey: string;
   baseUrl: string;
 }
 
-interface AppConfig {
+export interface AppConfig {
   jwt: JwtConfig;
   mongo: MongoConfig;
   myfatoorah: MyFatoorahConfig;
@@ -23,19 +23,19 @@ interface AppConfig {
   };
 }
 
-export default registerAs('config', (): AppConfig => ({
+export const configuration = registerAs('config', (): AppConfig => ({
   jwt: {
-    secret: process.env.JWT_SECRET || 'fallback-secret',
-    expiresIn: process.env.JWT_EXPIRES_IN || '3600s',
+    secret: process.env.JWT_SECRET || 'default-secret-key',
+    expiresIn: process.env.JWT_EXPIRES_IN || '3600s'
   },
   mongo: {
-    uri: process.env.MONGO_URI || 'mongodb://localhost:27017/myfatoorah',
+    uri: process.env.MONGO_URI || 'mongodb://localhost:27017/myfatoorah'
   },
   myfatoorah: {
     apiKey: process.env.MYFATOORAH_API_KEY || '',
-    baseUrl: process.env.MYFATOORAH_BASE_URL || '',
+    baseUrl: process.env.MYFATOORAH_BASE_URL || ''
   },
   app: {
-    baseUrl: process.env.APP_BASE_URL || 'http://localhost:3000',
-  },
+    baseUrl: process.env.APP_BASE_URL || 'http://localhost:3000'
+  }
 }));

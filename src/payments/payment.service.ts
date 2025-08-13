@@ -11,13 +11,14 @@ import {
 } from './interfaces/myfatoorah-response.interface';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import AppConfigType from '../config/configuration';
+import { AppConfig } from '../config/configuration';
+import axios from 'axios';
 
 @Injectable()
 export class PaymentService {
   constructor(
     @InjectModel(Payment.name) private paymentModel: Model<IPayment>,
-    private readonly configService: ConfigService<typeof AppConfigType>,
+    private configService: ConfigService<AppConfig>,
     private httpService: HttpService,
   ) { }
 
@@ -40,14 +41,13 @@ export class PaymentService {
       throw new Error('Payment not found');
     }
 
-    // Get config values with proper typing
-    const myfatoorahApiKey = this.configService.get('myfatoorah.apiKey');
-    const myfatoorahBaseUrl = this.configService.get('myfatoorah.baseUrl');
-    const appBaseUrl = this.configService.get('app.baseUrl');
+    const myfatoorahApiKey = this.configService.get('myfatoorah.apiKey', { infer: true });
+    const myfatoorahBaseUrl = this.configService.get('myfatoorah.baseUrl', { infer: true });
+    const appBaseUrl = this.configService.get('app.baseUrl', { infer: true });
 
-    // Use the variables directly (they are now properly typed as strings)
-    const paymentUrl = `${myfatoorahBaseUrl}/v2/ExecutePayment`;
-    const authHeader = `Bearer ${myfatoorahApiKey}`;
+    // Use String() to ensure proper string conversion
+    const paymentUrl = `${String(myfatoorahBaseUrl)}/v2/ExecutePayment`;
+    const authHeader = `Bearer ${String(myfatoorahApiKey)}`;
 
     const paymentData = {
       InvoiceAmount: payment.amount,
