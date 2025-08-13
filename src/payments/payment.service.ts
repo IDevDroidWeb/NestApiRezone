@@ -11,13 +11,13 @@ import {
 } from './interfaces/myfatoorah-response.interface';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AppConfigType } from '../config/configuration';
+import AppConfigType from '../config/configuration';
 
 @Injectable()
 export class PaymentService {
   constructor(
     @InjectModel(Payment.name) private paymentModel: Model<IPayment>,
-    private readonly configService: ConfigService<AppConfigType>,
+    private readonly configService: ConfigService<typeof AppConfigType>,
     private httpService: HttpService,
   ) { }
 

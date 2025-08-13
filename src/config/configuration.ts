@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
-interface JwtConfig {
+export interface JwtConfig {
   secret: string;
   expiresIn: string;
 }
@@ -23,7 +23,7 @@ interface AppConfig {
   };
 }
 
-export const config = registerAs('config', (): AppConfig => ({
+export default registerAs('config', (): AppConfig => ({
   jwt: {
     secret: process.env.JWT_SECRET || 'fallback-secret',
     expiresIn: process.env.JWT_EXPIRES_IN || '3600s',
@@ -39,5 +39,3 @@ export const config = registerAs('config', (): AppConfig => ({
     baseUrl: process.env.APP_BASE_URL || 'http://localhost:3000',
   },
 }));
-
-export type AppConfigType = ReturnType<typeof config>;
