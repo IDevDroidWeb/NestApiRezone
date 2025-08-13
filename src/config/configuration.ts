@@ -23,6 +23,11 @@ export interface AppConfig {
   };
 }
 
+export default registerAs('jwt', (): JwtConfig => ({
+  secret: process.env.JWT_SECRET || 'default-fallback-secret',
+  expiresIn: process.env.JWT_EXPIRES_IN || '3600s'
+}));
+
 export const configuration = registerAs('config', (): AppConfig => ({
   jwt: {
     secret: process.env.JWT_SECRET || 'default-secret-key',

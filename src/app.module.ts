@@ -7,12 +7,13 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PaymentModule } from './payments/payment.module';
+import jwtConfig from './config/configuration';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configuration]
+      load: [jwtConfig]
     }),
     MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/myfatoorah'),
     AuthModule,
