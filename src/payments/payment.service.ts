@@ -1,7 +1,5 @@
-import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { CreatePaymentDto } from './dto/create-payment.dto';
@@ -11,13 +9,15 @@ import {
   MyFatoorahPaymentResponse,
   MyFatoorahPaymentStatusResponse
 } from './interfaces/myfatoorah-response.interface';
-import AppConfig from "../config/configuration";
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { AppConfigType } from '../config/configuration';
 
 @Injectable()
 export class PaymentService {
   constructor(
     @InjectModel(Payment.name) private paymentModel: Model<IPayment>,
-    private configService: ConfigService<typeof AppConfig>,
+    private readonly configService: ConfigService<AppConfigType>,
     private httpService: HttpService,
   ) { }
 
@@ -41,9 +41,13 @@ export class PaymentService {
     }
 
     // Get config values with proper typing
-    const myfatoorahApiKey = this.configService.get('myfatoorah.apiKey', { infer: true });
-    const myfatoorahBaseUrl = this.configService.get('myfatoorah.baseUrl', { infer: true });
+    const myfatoorahApiKey = this.configService.get('myfatoorah.apiKey');
+    const myfatoorahBaseUrl = this.configService.get('myfatoorah.baseUrl');
     const appBaseUrl = this.configService.get('app.baseUrl');
+
+    // Use the variables directly (they are now properly typed as strings)
+    const paymentUrl = `${myfatoorahBaseUrl}/v2/ExecutePayment`;
+    const authHeader = `Bearer ${myfatoorahApiKey}`;
 
     const paymentData = {
       InvoiceAmount: payment.amount,
