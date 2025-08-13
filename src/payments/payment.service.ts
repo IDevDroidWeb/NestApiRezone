@@ -11,13 +11,13 @@ import {
   MyFatoorahPaymentResponse,
   MyFatoorahPaymentStatusResponse
 } from './interfaces/myfatoorah-response.interface';
-import { AppConfig } from '../config/configuration';
+import AppConfig from "../config/configuration";
 
 @Injectable()
 export class PaymentService {
   constructor(
     @InjectModel(Payment.name) private paymentModel: Model<IPayment>,
-    private configService: ConfigService<AppConfig>,
+    private configService: ConfigService<typeof AppConfig>,
     private httpService: HttpService,
   ) { }
 
@@ -43,7 +43,7 @@ export class PaymentService {
     // Get config values with proper typing
     const myfatoorahApiKey = this.configService.get('myfatoorah.apiKey', { infer: true });
     const myfatoorahBaseUrl = this.configService.get('myfatoorah.baseUrl', { infer: true });
-    const appBaseUrl = this.configService.get('app.baseUrl', { infer: true });
+    const appBaseUrl = this.configService.get('app.baseUrl');
 
     const paymentData = {
       InvoiceAmount: payment.amount,

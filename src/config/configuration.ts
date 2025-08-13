@@ -14,10 +14,13 @@ interface MyFatoorahConfig {
   baseUrl: string;
 }
 
-export interface AppConfig {
+interface AppConfig {
   jwt: JwtConfig;
   mongo: MongoConfig;
   myfatoorah: MyFatoorahConfig;
+  app: {
+    baseUrl: string;
+  };
 }
 
 export default registerAs('config', (): AppConfig => ({
@@ -31,5 +34,8 @@ export default registerAs('config', (): AppConfig => ({
   myfatoorah: {
     apiKey: process.env.MYFATOORAH_API_KEY || '',
     baseUrl: process.env.MYFATOORAH_BASE_URL || '',
+  },
+  app: {
+    baseUrl: process.env.APP_BASE_URL || 'http://localhost:3000',
   },
 }));
