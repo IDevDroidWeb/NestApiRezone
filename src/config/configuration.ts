@@ -1,21 +1,21 @@
 import { registerAs } from '@nestjs/config';
 
-// Define interfaces with 'export type' for isolatedModules
-export type JwtConfig = {
+// Define the interface first
+export interface JwtConfig {
   secret: string;
   expiresIn: string;
-};
+}
 
-export type MongoConfig = {
+export interface MongoConfig {
   uri: string;
-};
+}
 
-export type MyFatoorahConfig = {
+export interface MyFatoorahConfig {
   apiKey: string;
   baseUrl: string;
-};
+}
 
-export type AppConfig = {
+export interface AppConfig {
   environment: string;
   port: number;
   apiVersion: string;
@@ -25,16 +25,16 @@ export type AppConfig = {
   app: {
     baseUrl: string;
   };
-};
+}
 
-// Default export remains the same
+// Export the configuration as default
 export default registerAs('config', (): AppConfig => ({
   environment: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT as string, 10) || 3000,
   apiVersion: process.env.API_VERSION || 'v1',
   jwt: {
-    secret: process.env.JWT_SECRET as string,
-    expiresIn: process.env.JWT_EXPIRES_IN as string,
+    secret: process.env.JWT_SECRET || 'default-secret',
+    expiresIn: process.env.JWT_EXPIRES_IN || '3600s',
   },
   mongo: {
     uri: process.env.MONGO_URI as string,

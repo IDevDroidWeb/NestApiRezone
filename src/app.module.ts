@@ -4,9 +4,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from './config/configuration';
+import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PaymentModule } from './payments/payment.module';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
